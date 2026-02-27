@@ -80,7 +80,7 @@ int pfile_stat_mode_ok(struct stat *buf, unsigned int bits) {
   gid_t *psync_gids;
   int psync_gids_cnt;
 
-  psync_uid = psys_get_uid();
+  psync_uid = psys_get_euid();
   if (psync_uid == 0) {
     return 1;
   }
@@ -88,7 +88,7 @@ int pfile_stat_mode_ok(struct stat *buf, unsigned int bits) {
     bits <<= 6;
     return (buf->st_mode & bits) == bits;
   }
-  if (buf->st_gid == psys_get_gid()) {
+  if (buf->st_gid == psys_get_egid()) {
     bits <<= 3;
     return (buf->st_mode & bits) == bits;
   }

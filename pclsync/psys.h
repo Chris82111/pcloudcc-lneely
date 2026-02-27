@@ -9,6 +9,8 @@
 
 uid_t psys_get_uid();
 gid_t psys_get_gid();
+uid_t psys_get_euid();
+gid_t psys_get_egid();
 gid_t *psys_get_gids();
 int psys_get_gids_cnt();
 

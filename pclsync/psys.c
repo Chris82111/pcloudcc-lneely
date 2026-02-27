@@ -10,6 +10,8 @@
 
 static uid_t psync_uid;
 static gid_t psync_gid;
+static uid_t psync_euid;
+static gid_t psync_egid;
 static gid_t *psync_gids;
 static int psync_gids_cnt;
 
@@ -26,6 +28,10 @@ static void abort_on_sqllock(uint64_t millisec) {
 uid_t psys_get_uid() { return psync_uid; }
 
 gid_t psys_get_gid() { return psync_gid; }
+
+uid_t psys_get_euid() { return psync_euid; }
+
+gid_t psys_get_egid() { return psync_egid; }
 
 gid_t *psys_get_gids() { return psync_gids; }
 
@@ -48,6 +54,8 @@ void psys_init() {
   signal(SIGPIPE, SIG_IGN);
   psync_uid = getuid();
   psync_gid = getgid();
+  psync_euid = geteuid();
+  psync_egid = getegid();
   psync_gids_cnt = getgroups(0, NULL);
   psync_gids = malloc(sizeof(gid_t) * psync_gids_cnt);
   if (pdbg_unlikely(getgroups(psync_gids_cnt, psync_gids) != psync_gids_cnt))
